@@ -3,159 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nhập ID GAME & Mã Giao Dịch</title>
+    <title>Hệ Thống Gaming Neon</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Orbitron', sans-serif;
+            background-color: #0d0d0d;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            width: 400px;
             text-align: center;
-            margin: 50px;
+            display: none;
         }
-        .button-group {
-            margin-bottom: 20px;
+
+        .active {
+            display: block;
         }
-        .button-group button {
-            background: #007bff;
-            color: white;
-            padding: 10px 15px;
+
+        h2 {
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
             border: none;
             border-radius: 5px;
             font-size: 16px;
-            cursor: pointer;
-            margin: 5px;
         }
-        .button-group button:hover {
-            background: #0056b3;
+
+        input, select {
+            background-color: #333;
+            color: #fff;
         }
-        form {
-            display: inline-block;
-            text-align: left;
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        input, select, button {
-            width: 100%;
-            margin: 10px 0;
-            padding: 10px;
-            font-size: 16px;
-        }
+
         button {
-            background: #28a745;
-            color: white;
-            border: none;
+            background-color: #00ffff;
+            color: #000;
             cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: 0 0 10px #00ffff;
         }
+
         button:hover {
-            background: #218838;
+            background-color: #00cccc;
+            box-shadow: 0 0 15px #00cccc;
         }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-        }
-        .modal-content {
-            background: white;
-            width: 80%;
-            max-width: 500px;
-            margin: 10% auto;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-        .close {
-            color: red;
-            font-size: 24px;
+
+        .toggle-link {
+            color: #00ffff;
             cursor: pointer;
-            float: right;
-        }
-        .video-container {
-            margin-top: 20px;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
 
-    <h2>Nhập Thông Tin Thiết Bị</h2>
-
-    <div class="button-group">
-        <button onclick="openModal()">📽️ Cấu Hình Và SeverMod Trong </button>
-        <button onclick="openTransactionPage()">🔍 Xem Mã Giao Dịch</button>
+    <div class="container active" id="login-container">
+        <h2>Đăng Nhập</h2>
+        <input type="text" id="login-username" placeholder="Tên đăng nhập" required>
+        <input type="password" id="login-password" placeholder="Mật khẩu" required>
+        <button onclick="login()">Đăng Nhập</button>
+        <p>Chưa có tài khoản? <span class="toggle-link" onclick="toggleForm()">Đăng ký ngay</span></p>
     </div>
 
-    <form id="udidForm">
-        <label for="udid">📌 Nhập ID:</label>
-        <input type="text" id="udid" name="udid" required placeholder="Nhập ID tại đây">
+    <div class="container" id="register-container">
+        <h2>Đăng Ký</h2>
+        <input type="text" id="register-username" placeholder="Tên đăng nhập" required>
+        <input type="password" id="register-password" placeholder="Mật khẩu" required>
+        <input type="password" id="register-confirm-password" placeholder="Xác nhận mật khẩu" required>
+        <button onclick="register()">Đăng Ký</button>
+        <p>Đã có tài khoản? <span class="toggle-link" onclick="toggleForm()">Đăng nhập</span></p>
+    </div>
 
+    <div class="container" id="deposit-container">
+        <h2>Nạp Tiền</h2>
+        <input type="number" id="deposit-amount" placeholder="Số tiền cần nạp" required>
+        <select id="deposit-method">
+            <option value="momo">Momo</option>
+            <option value="atm">ATM/Ngân hàng</option>
+            <option value="thegame">Thẻ game</option>
+        </select>
+        <button onclick="deposit()">Nạp Tiền</button>
+        <p>Đi đến <span class="toggle-link" onclick="showPurchase()">Cửa hàng vật phẩm</span></p>
+    </div>
 
-        <label for="transaction_id">💳 Mã giao dịch:</label>
-        <input type="text" id="transaction_id" name="transaction_id" required placeholder="Nhập mã giao dịch">
-
-        <button type="submit">Gửi Thông Tin</button>
-    </form>
-
-    <div id="udidModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h3>🔗 Cấu Hình Mod Và SeverMod</h3>
-            <a href="https://anotepad.com/notes/m3xq3q9s" target="_blank">Câú Hình Mod Và Severmod </a>
-            <div class="video-container">
-                <h3>📽️ Video hướng dẫn</h3>
-                <iframe src="https://streamable.com/e/fnhpu1" width="100%" height="250" frameborder="0" allowfullscreen></iframe>
-            </div>
-        </div>
+    <div class="container" id="purchase-container">
+        <h2>Mua Vật Phẩm</h2>
+        <select id="item-select">
+            <option value="item1">Vật phẩm 1 - 100 Vàng</option>
+            <option value="item2">Vật phẩm 2 - 200 Vàng</option>
+            <option value="item3">Vật phẩm 3 - 300 Vàng</option>
+        </select>
+        <button onclick="purchaseItem()">Mua Ngay</button>
     </div>
 
     <script>
-        function openModal() {
-            document.getElementById("udidModal").style.display = "block";
+        let userBalance = 500; // Giả lập số dư
+
+        function toggleForm() {
+            document.getElementById('login-container').classList.toggle('active');
+            document.getElementById('register-container').classList.toggle('active');
         }
 
-        function closeModal() {
-            document.getElementById("udidModal").style.display = "none";
+        function login() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+
+            if (username === 'user' && password === 'password') {
+                alert('Đăng nhập thành công!');
+                document.getElementById('login-container').classList.remove('active');
+                document.getElementById('deposit-container').classList.add('active');
+            } else {
+                alert('Tên đăng nhập hoặc mật khẩu không đúng.');
+            }
         }
 
-        function openTransactionPage() {
-            window.open("http://iosmod.site/client/orders", "_blank");
+        function register() {
+            const username = document.getElementById('register-username').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+
+            if (password !== confirmPassword) {
+                alert('Mật khẩu xác nhận không khớp.');
+                return;
+            }
+
+            alert('Đăng ký thành công! Vui lòng đăng nhập.');
+            toggleForm();
         }
 
-        document.getElementById("udidForm").addEventListener("submit", function(event) {
-            event.preventDefault();
+        function deposit() {
+            const amount = parseInt(document.getElementById('deposit-amount').value);
+            const method = document.getElementById('deposit-method').value;
 
-            var udid = document.getElementById("udid").value;
-            var device = document.getElementById("device").value;
+            if (amount <= 0) {
+                alert('Vui lòng nhập số tiền hợp lệ.');
+                return;
+            }
 
-𝓘 𝓐𝓜 𝓜𝓘𝓝𝓗, [27/03/2025 10:54 CH]
-var transaction_id = document.getElementById("transaction_id").value;
+            userBalance += amount;
+            alert(`Bạn đã nạp thành công ${amount} VNĐ qua phương thức ${method}. Số dư: ${userBalance} VNĐ.`);
+        }
 
-            var botToken = "7111835207:AAHgAuvjpMFiYdg7SqoVR8EcTmBTeBviLhA"; // Token bot Telegram
-            var chatId = "-1002690436244"; // ID nhóm Telegram
+        function showPurchase() {
+            document.getElementById('deposit-container').classList.remove('active');
+            document.getElementById('purchase-container').classList.add('active');
+        }
 
-            var message = 📢 **Thông tin giao dịch mới:**\n\n
-                        + 📌 **ID GAME:** ${id game}\n
-                        + 📱 **Thiết bị:** ${device}\n
-                        + 🔗 **Xem giao dịch tại:** [iosmod.site](http://iosmod.site/client/orders);
+        function purchaseItem() {
+            const selectedItem = document.getElementById('item-select').value;
+            let price = 0;
 
-            var telegramURL = https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}&parse_mode=Markdown;
+            if (selectedItem === 'item1') price = 100;
+            if (selectedItem === 'item2') price = 200;
+            if (selectedItem === 'item3') price = 300;
 
-            fetch(telegramURL)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.ok) {
-                        alert("✅ Gửi thành công!");
-                        window.location.href = "https://t.me/leanhtuantai"; // Chuyển hướng sau khi gửi thành công
-                    } else {
-                        alert("❌ Lỗi gửi tin nhắn!");
-                    }
-                })
-                .catch(error => {
-                    alert("❌ Lỗi kết nối đến Telegram!");
-                });
-        });
+            if (userBalance >= price) {
+                userBalance -= price;
+                alert(`Bạn đã mua thành công ${selectedItem}. Số dư còn lại: ${userBalance} VNĐ.`);
+            } else {
+                alert('Bạn không đủ vàng để mua vật phẩm này.');
+            }
+        }
     </script>
 
 </body>
